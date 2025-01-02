@@ -23,7 +23,7 @@ name:               scheme
 version:            0.1.0.0
 
 -- A short (one-line) description of the package.
--- synopsis:
+synopsis:           A scheme interpreter, based on the "Write You A Scheme 2.0" tutorial.
 
 -- A longer description of the package.
 -- description:
