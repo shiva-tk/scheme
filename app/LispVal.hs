@@ -34,5 +34,5 @@ instance Show LispVal where
       showVal (Bool False) = "#f"
       showVal Nil          = "Nil"
       showVal (List vs)    = T.concat [ "(", T.unwords (map showVal vs), ")" ]
-      showVal (Func _)      = "(internal function)"
+      showVal (Func _)     = "(internal function)"
       showVal (Lambda _ _) = "(lambda function)"
