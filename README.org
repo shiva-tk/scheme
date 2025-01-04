@@ -1,4 +1,4 @@
 #+title: Scheme Interpreter
 
-A little project based on the [[https:wespiser.com/writings/wyas/00_overview.html]["Write You A Scheme 2.0"]] tutorial.
+A little project based on the [[https://www.wespiser.com/writings/wyas/00_overview.html]["Write You A Scheme 2.0"]] tutorial.
 Wanted to brush up on my Haskell and also have a bit of fun.
