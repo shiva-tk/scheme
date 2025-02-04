@@ -23,6 +23,21 @@ data LispVal = Atom T.Text
              | Nil
              | Bool Bool
 
+instance Eq LispVal where
+  (Atom a)     == (Atom b)     = a == b
+  (List a)     == (List b)     = a == b
+  (Number a)   == (Number b)   = a == b
+  (String a)   == (String b)   = a == b
+  (Bool a)     == (Bool b)     = a == b
+  Nil          == Nil          = True
+
+  -- Functions cannot be compared
+  (Func _)     == (Func _)     = error "Cannot compare LispVal functions for equality"
+  (Lambda _ _) == (Lambda _ _) = error "Cannot compare LispVal lambda functions for equality"
+
+  -- Everything else is false
+  _            == _            = False
+
 instance Show LispVal where
   show = T.unpack . showVal
     where

@@ -56,28 +56,29 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
+library
+    exposed-modules:   LispVal, Parser
+    hs-source-dirs:    src
+    build-depends:     base ^>=4.17.2.1
+                     , containers
+                     , text
+                     , mtl
+                     , parsec
+    default-language:  Haskell2010
+
 executable scheme
-    -- Import common warning flags.
     import:           warnings
-
-    -- .hs or .lhs file containing the Main module.
     main-is:          Main.hs
-
-    -- Modules included in this executable, other than Main.
-    other-modules:    LispVal, Parser
-
-    -- LANGUAGE extensions used by modules in this package.
-    -- other-extensions:
-
-    -- Other library packages from which modules are imported.
+    other-modules:
     build-depends:    base ^>=4.17.2.1
-                    , containers
-                    , text
-                    , mtl
-                    , parsec
-
-    -- Directories containing source files.
+                    , scheme
     hs-source-dirs:   app
-
-    -- Base language which the package is written in.
     default-language: Haskell2010
+
+test-suite test
+    type:           exitcode-stdio-1.0
+    main-is:        Main.hs
+    hs-source-dirs: test/
+    ghc-options:    -threaded -rtsopts -with-rtsopts=-N
+    other-modules:  ParserSpec
+    build-depends:  base, hspec, scheme, text

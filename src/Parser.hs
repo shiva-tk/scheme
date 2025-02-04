@@ -19,7 +19,7 @@ style :: Tok.GenLanguageDef T.Text () Identity
 style = Lang.emptyDef {
   Tok.commentStart = "{-"
   , Tok.commentEnd = "-}"
-  , Tok.commentLine = "--"
+  , Tok.commentLine = ";"
   , Tok.opStart = Tok.opLetter style
   , Tok.opLetter = oneOf ":!#$%%&*+./<=>?@\\^|-~"
   , Tok.identStart = letter <|>  oneOf "-+/*=|&><"
@@ -43,13 +43,13 @@ parseText = do
   return $ String . T.pack $ p
 
 parseNumber :: Parser LispVal
-parseNumber = Number . read <$> many1 digit
-
-parseNegNum :: Parser LispVal
-parseNegNum = do
-  _ <- char '-'
-  d <- many1 digit
-  return $ Number . negate . read $ d
+parseNumber = do
+  s <- optionMaybe $ char '+' <|> char '-'
+  ds <- many1 digit
+  let n = read ds
+  return $ case s of
+        Just '-' -> Number $ negate n
+        _        -> Number n
 
 parseList :: Parser LispVal
 parseList = List . concat <$>
@@ -62,7 +62,9 @@ parseQuote :: Parser LispVal
 parseQuote = do
   reservedOp "\'"
   x <- parseExpr
-  return $ List [Atom "quote", x]
+  return $ case x of
+    List [] -> Nil
+    _       -> List [Atom "quote", x]
 
 parseReserved :: Parser LispVal
 parseReserved = do
@@ -72,8 +74,7 @@ parseReserved = do
 
 parseExpr :: Parser LispVal
 parseExpr = parseReserved
-  <|> parseNumber
-  <|> try parseNegNum
+  <|> try parseNumber
   <|> parseAtom
   <|> parseText
   <|> parseQuote
